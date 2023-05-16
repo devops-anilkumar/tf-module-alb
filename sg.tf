@@ -1,5 +1,6 @@
 #CREATES SECURITY GROUP - PUBLIC
 resource "aws_security_group" "alb-public" {
+  count       = var.INTERNAL ? 0 : 1
   name        = "robot-${var.ENV}-public-alb-sg"
   description = "Allow public traffic"
   vpc_id      = data.terraform_remote_state.vpc.outputs.VPC_ID
@@ -26,6 +27,7 @@ resource "aws_security_group" "alb-public" {
 
 #CREATES SECURITY GROUP - PRIVATE
 resource "aws_security_group" "alb-private" {
+  count       = var.INTERNAL ? 1 : 0
   name        = "robot-${var.ENV}-private-alb-sg"
   description = "Allow internal traffic"
   vpc_id      = data.terraform_remote_state.vpc.outputs.VPC_ID
